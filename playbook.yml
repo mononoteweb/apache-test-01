@@ -1,0 +1,25 @@
+- hosts: apache-test-01
+  user: vagrant
+  become: yes
+  tasks:
+    - name: yum update
+      yum: name=* state=latest
+    - name: Install basepackage
+      yum: name={{ item }} state=present
+      with_items:
+        - wget
+        - ntp
+        - vim
+    - name: Install libselinux-python
+      yum: name=libselinux-python state=installed
+    - name: SELinux Disable
+      selinux: state=disabled
+    - name: stop firewalld
+      service: name=firewalld state=stopped
+    - name: Install apache
+      yum: name=httpd state=latest
+      notify:
+        - restart apache
+  handlers:
+    - name: restart apache
+      service: name=httpd state=restarted enabled=yes
