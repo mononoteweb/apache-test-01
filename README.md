@@ -1,6 +1,7 @@
 # Getting Started
 ```
 vagrant up  
+vagrant ssh-config --host apache-test-01 >> ~/.ssh/config
 ansible-playbook -i hosts playbook.yml
 ```
 
